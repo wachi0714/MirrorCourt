@@ -9,7 +9,7 @@ async function main() {
   await fateMirror.deployed();
 
   console.log(`✅ FateMirror deployed to: ${fateMirror.address}`);
-  console.log(`📜 ABI saved in your frontend project (copy the ABI from artifacts)`);
+  console.log(`📜 ABI saved in artifacts/contracts/FateMirror.sol/FateMirror.json`);
 }
 
 main().catch((error) => {
