@@ -82,14 +82,13 @@ contract MirrorCourt is ERC721, ERC721URIStorage {
         }
     }
 
-    // ✅ fixed
     function getCurrentScene() public view returns (string memory, string[] memory) {
         PlayerStory storage story = players[msg.sender];
         require(story.isStarted, "No active story");
         
-        // Fix: Return completion message when story is finished
+        // 你要的修复：已结束故事返回提示
         if (story.isCompleted) {
-            return ("The mirror's tale is complete. Mint your NFT to behold the final reflection.", new string[](0));
+            return ("故事已结束，请铸造 NFT 查看最终画面。", new string[](0));
         }
         
         Scene storage s = scenes[story.currentScene];
@@ -136,7 +135,7 @@ contract MirrorCourt is ERC721, ERC721URIStorage {
         }
 
         string memory json = string(abi.encodePacked(
-            '{"name":"Mirror Court #', Strings.toString(tokenIdCounter.current() - 1), '",',
+            '{"name":"Mirror Court #', Strings.toString(_tokenIdCounter.current() - 1), '",',
             '"description":"', description, '",',
             '"image":"data:image/svg+xml;base64,', Base64.encode(bytes(svg)), '"}'
         ));
@@ -147,7 +146,6 @@ contract MirrorCourt is ERC721, ERC721URIStorage {
         ));
     }
 
-    // Required overrides
     function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
