@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirror Court - 4-Ending SVG Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #eee;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,215,0,0.3);
+        }
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h2 {
+            margin-top: 0;
+            text-align: center;
+            border-bottom: 2px solid rgba(255,215,0,0.5);
+            display: inline-block;
+            width: auto;
+            margin-bottom: 15px;
+        }
+        .svg-preview {
+            background: white;
+            border-radius: 12px;
+            padding: 10px;
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .svg-preview svg {
+            width: 200px;
+            height: 200px;
+            border-radius: 8px;
+        }
+        .code-area {
+            background: #0a0e1a;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 15px 0;
+        }
+        .code-area pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-size: 11px;
+            color: #0f0;
+            font-family: monospace;
+            max-height: 150px;
+            overflow: auto;
+        }
+        button {
+            background: #ffd966;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #ffc107;
+            transform: scale(1.02);
+        }
+        .copy-btn {
+            background: #2c3e66;
+            color: white;
+        }
+        .copy-btn:hover {
+            background: #1e2a44;
+        }
+        .footer {
+            background: rgba(0,0,0,0.5);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .footer h3 {
+            margin-top: 0;
+        }
+        .combined {
+            font-family: monospace;
+            font-size: 12px;
+            background: #0a0e1a;
+            padding: 15px;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+        hr {
+            border-color: rgba(255,255,255,0.2);
+            margin: 20px 0;
+        }
+        @media (max-width: 960px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎭 Mirror Court · 4-Ending SVG Generator</h1>
+    <div class="subtitle">Member 2 | On-chain Art Design | Click to copy single-line strings for Member 1</div>
+
+    <div class="grid" id="cardsGrid"></div>
+
+    <div class="footer">
+        <h3>📦 Complete 4-Ending SVG String Object (paste directly to Member 1)</h3>
+        <div class="combined" id="combinedOutput"></div>
+        <button id="copyAllBtn" style="background: #27ae60;">📋 Copy All (JSON format)</button>
+        <p style="font-size: 12px; margin-top: 12px;">💡 Member 1 will use the choice path in the contract to retrieve the matching SVG string from this object.</p>
+    </div>
+</div>
+
+<script>
+    // ======================= Define SVG for the four endings (styles easy to modify) =======================
+
+    // 1️⃣ Childhood Wonder: child gazing up at a swirling galaxy from a flower field
+    const childhoodSVG = `<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'>
+  <defs>
+    <radialGradient id='skyGlow' cx='50%' cy='35%' r='60%'>
+      <stop offset='0%' stop-color='#6EC6F5' stop-opacity='0.9'/>
+      <stop offset='40%' stop-color='#1A4A9C'/>
+      <stop offset='100%' stop-color='#0B0E2E'/>
+    </radialGradient>
+    <radialGradient id='galaxyCore' cx='50%' cy='50%' r='50%'>
+      <stop offset='0%' stop-color='#FFFDE4' stop-opacity='1'/>
+      <stop offset='40%' stop-color='#A8D8F0' stop-opacity='0.8'/>
+      <stop offset='100%' stop-color='#1A4A9C' stop-opacity='0'/>
+    </radialGradient>
+    <radialGradient id='groundGrad' cx='50%' cy='0%' r='100%'>
+      <stop offset='0%' stop-color='#C87941'/>
+      <stop offset='100%' stop-color='#5A3010'/>
+    </radialGradient>
+  </defs>
+  <rect width='500' height='500' fill='url(#skyGlow)'/>
+  <ellipse cx='80' cy='420' rx='200' ry='80' fill='#5B2D8E' opacity='0.45'/>
+  <ellipse cx='430' cy='380' rx='160' ry='70' fill='#3A1C72' opacity='0.5'/>
+  <ellipse cx='360' cy='160' rx='130' ry='55' fill='#2255A4' opacity='0.4'/>
+  <ellipse cx='130' cy='200' rx='110' ry='45' fill='#1B3A8C' opacity='0.35'/>
+  <path d='M250 175 Q310 130 360 155 Q400 175 380 220 Q350 260 290 245 Q230 225 210 175 Q200 140 240 120 Q290 100 330 130' stroke='#8EC8F5' stroke-width='4' fill='none' opacity='0.55' stroke-linecap='round'/>
+  <path d='M250 175 Q190 130 155 155 Q120 180 145 220 Q170 255 220 248 Q270 240 285 195' stroke='#A0D4F8' stroke-width='3' fill='none' opacity='0.4' stroke-linecap='round'/>
+  <path d='M250 175 Q265 215 295 230 Q340 250 370 230 Q400 205 385 170' stroke='#C8E8FF' stroke-width='2' fill='none' opacity='0.35' stroke-linecap='round'/>
+  <circle cx='250' cy='165' r='55' fill='url(#galaxyCore)' opacity='0.85'/>
+  <circle cx='250' cy='165' r='28' fill='#FFFDE4' opacity='0.7'/>
+  <circle cx='250' cy='165' r='12' fill='#FFFFFF' opacity='0.95'/>
+  <circle cx='60' cy='40' r='1.5' fill='#FFFFFF' opacity='0.9'/>
+  <circle cx='110' cy='70' r='1' fill='#FFFFFF' opacity='0.8'/>
+  <circle cx='170' cy='30' r='1.8' fill='#FFFFFF' opacity='0.85'/>
+  <circle cx='200' cy='90' r='1' fill='#FFFFFF' opacity='0.7'/>
+  <circle cx='310' cy='55' r='1.5' fill='#FFFFFF' opacity='0.9'/>
+  <circle cx='370' cy='30' r='1' fill='#FFFFFF' opacity='0.8'/>
+  <circle cx='420' cy='80' r='2' fill='#FFFFFF' opacity='0.75'/>
+  <circle cx='450' cy='50' r='1.2' fill='#FFFFFF' opacity='0.85'/>
+  <circle cx='80' cy='130' r='1.2' fill='#FFFFFF' opacity='0.8'/>
+  <circle cx='390' cy='120' r='1.3' fill='#FFFFFF' opacity='0.8'/>
+  <circle cx='340' cy='200' r='3' fill='#FFB347' opacity='0.8'/>
+  <circle cx='170' cy='240' r='2.5' fill='#FF6B6B' opacity='0.7'/>
+  <circle cx='420' cy='170' r='2' fill='#A0E0FF' opacity='0.8'/>
+  <circle cx='90' cy='260' r='2.5' fill='#FFD93D' opacity='0.65'/>
+  <path d='M0 370 Q120 320 250 335 Q380 350 500 310 L500 500 L0 500 Z' fill='url(#groundGrad)'/>
+  <circle cx='50' cy='375' r='5' fill='#E8334A'/>
+  <circle cx='75' cy='365' r='4' fill='#FFFFFF'/>
+  <circle cx='100' cy='372' r='5' fill='#E8334A'/>
+  <circle cx='125' cy='362' r='4' fill='#4A90D9'/>
+  <circle cx='148' cy='370' r='5' fill='#FF6B6B'/>
+  <circle cx='170' cy='360' r='4' fill='#E8334A'/>
+  <circle cx='355' cy='365' r='5' fill='#4A90D9'/>
+  <circle cx='380' cy='373' r='4' fill='#E8334A'/>
+  <circle cx='400' cy='362' r='5' fill='#FF9ECD'/>
+  <circle cx='425' cy='370' r='4' fill='#4A90D9'/>
+  <circle cx='450' cy='360' r='5' fill='#E8334A'/>
+  <circle cx='472' cy='368' r='4' fill='#FFFFFF'/>
+  <line x1='50' y1='380' x2='50' y2='400' stroke='#6B4226' stroke-width='1.5'/>
+  <line x1='100' y1='377' x2='100' y2='398' stroke='#6B4226' stroke-width='1.5'/>
+  <line x1='355' y1='370' x2='355' y2='391' stroke='#6B4226' stroke-width='1.5'/>
+  <line x1='450' y1='365' x2='450' y2='386' stroke='#6B4226' stroke-width='1.5'/>
+  <rect x='233' y='400' width='14' height='55' rx='6' fill='#5A1A1A'/>
+  <rect x='253' y='400' width='14' height='55' rx='6' fill='#5A1A1A'/>
+  <rect x='225' y='340' width='50' height='65' rx='10' fill='#2A7DC0'/>
+  <path d='M225 355 Q205 375 210 395' stroke='#2A7DC0' stroke-width='13' fill='none' stroke-linecap='round'/>
+  <path d='M275 355 Q295 375 290 395' stroke='#2A7DC0' stroke-width='13' fill='none' stroke-linecap='round'/>
+  <rect x='243' y='325' width='14' height='18' rx='5' fill='#E8C49A'/>
+  <ellipse cx='250' cy='312' rx='22' ry='24' fill='#E8C49A'/>
+  <ellipse cx='250' cy='295' rx='22' ry='14' fill='#D4A843'/>
+  <ellipse cx='238' cy='293' rx='10' ry='10' fill='#C89630'/>
+  <ellipse cx='262' cy='292' rx='9' ry='9' fill='#DEB84A'/>
+  <ellipse cx='250' cy='289' rx='14' ry='8' fill='#E8C855'/>
+  <ellipse cx='250' cy='320' rx='30' ry='50' fill='#A8D8F0' opacity='0.12'/>
+  <text x='250' y='478' text-anchor='middle' font-family='Georgia, serif' font-size='18' fill='#C8E8FF' font-weight='bold' opacity='0.95'>✨ Childhood Wonder</text>
+</svg>`;
+
+    // 2️⃣ Blazing Youth: skaters and cyclists on a glowing city street
+    const youthSVG = `<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'>
+  <defs>
+    <radialGradient id='sky' cx='50%' cy='45%' r='65%'>
+      <stop offset='0%' stop-color='#FFE566'/>
+      <stop offset='45%' stop-color='#FF8C00'/>
+      <stop offset='100%' stop-color='#CC2200'/>
+    </radialGradient>
+    <linearGradient id='streetGrad' x1='0%' y1='0%' x2='0%' y2='100%'>
+      <stop offset='0%' stop-color='#5A3A10'/>
+      <stop offset='50%' stop-color='#3A2208' stop-opacity='0.9'/>
+      <stop offset='100%' stop-color='#1A1008'/>
+    </linearGradient>
+    <linearGradient id='reflGrad' x1='0%' y1='0%' x2='0%' y2='100%'>
+      <stop offset='0%' stop-color='#FFB800' stop-opacity='0.55'/>
+      <stop offset='100%' stop-color='#FF4400' stop-opacity='0.1'/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width='500' height='500' fill='url(#sky)'/>
+  <!-- Sky colour patches (painterly) -->
+  <rect x='0' y='0' width='160' height='220' fill='#CC2200' opacity='0.45'/>
+  <rect x='340' y='0' width='160' height='200' fill='#1A6AAA' opacity='0.55'/>
+  <ellipse cx='250' cy='140' rx='130' ry='90' fill='#FFE566' opacity='0.45'/>
+  <rect x='0' y='170' width='130' height='60' fill='#FF6600' opacity='0.3'/>
+  <rect x='370' y='150' width='130' height='70' fill='#FF9933' opacity='0.3'/>
+
+  <!-- LEFT BUILDINGS -->
+  <rect x='0' y='30' width='110' height='280' fill='#CC3300'/>
+  <rect x='10' y='50' width='13' height='16' fill='#FFD700' opacity='0.7'/>
+  <rect x='30' y='55' width='13' height='16' fill='#FFD700' opacity='0.55'/>
+  <rect x='50' y='48' width='13' height='16' fill='#FFD700' opacity='0.65'/>
+  <rect x='10' y='82' width='13' height='16' fill='#FFD700' opacity='0.45'/>
+  <rect x='35' y='88' width='13' height='16' fill='#FFD700' opacity='0.6'/>
+  <rect x='0' y='130' width='75' height='180' fill='#AA2200' opacity='0.75'/>
+  <rect x='90' y='90' width='65' height='220' fill='#FF7733' opacity='0.85'/>
+  <rect x='95' y='105' width='10' height='14' fill='#FFE566' opacity='0.6'/>
+  <rect x='112' y='100' width='10' height='14' fill='#FFE566' opacity='0.5'/>
+  <rect x='95' y='128' width='10' height='14' fill='#FFE566' opacity='0.55'/>
+
+  <!-- RIGHT BUILDINGS -->
+  <rect x='390' y='30' width='110' height='280' fill='#1A6AAA'/>
+  <rect x='400' y='50' width='13' height='16' fill='#FFD700' opacity='0.65'/>
+  <rect x='422' y='55' width='13' height='16' fill='#FFD700' opacity='0.5'/>
+  <rect x='448' y='48' width='13' height='16' fill='#FFD700' opacity='0.7'/>
+  <rect x='400' y='82' width='13' height='16' fill='#FFD700' opacity='0.45'/>
+  <rect x='460' y='120' width='40' height='190' fill='#14558A' opacity='0.7'/>
+  <rect x='345' y='90' width='65' height='220' fill='#FF9933' opacity='0.8'/>
+  <rect x='350' y='105' width='10' height='14' fill='#FFE566' opacity='0.55'/>
+  <rect x='368' y='100' width='10' height='14' fill='#FFE566' opacity='0.5'/>
+  <rect x='350' y='128' width='10' height='14' fill='#FFE566' opacity='0.6'/>
+
+  <!-- STREET -->
+  <polygon points='155,500 345,500 278,268 222,268' fill='url(#streetGrad)'/>
+  <!-- Reflection glow on street -->
+  <polygon points='155,500 345,500 278,268 222,268' fill='url(#reflGrad)'/>
+  <!-- Lane markings -->
+  <polygon points='247,500 253,500 251,268 249,268' fill='#FFB800' opacity='0.35'/>
+  <!-- Reflection puddles -->
+  <ellipse cx='205' cy='440' rx='28' ry='7' fill='#FF9900' opacity='0.38'/>
+  <ellipse cx='300' cy='420' rx='22' ry='6' fill='#FF6600' opacity='0.32'/>
+  <ellipse cx='250' cy='470' rx='38' ry='9' fill='#FFB800' opacity='0.28'/>
+  <ellipse cx='230' cy='395' rx='16' ry='4' fill='#FF8800' opacity='0.3'/>
+
+  <!-- SIDEWALKS -->
+  <polygon points='0,295 155,295 155,500 0,500' fill='#6B4820' opacity='0.55'/>
+  <polygon points='345,295 500,295 500,500 345,500' fill='#6B4820' opacity='0.55'/>
+
+  <!-- === BACKGROUND CYCLIST (centre, small) === -->
+  <circle cx='250' cy='284' r='5' fill='#1A3A6A'/>
+  <rect x='245' y='289' width='10' height='16' rx='2' fill='#2255AA'/>
+  <circle cx='243' cy='308' r='5' fill='none' stroke='#333' stroke-width='1.5'/>
+  <circle cx='257' cy='308' r='5' fill='none' stroke='#333' stroke-width='1.5'/>
+  <line x1='243' y1='303' x2='257' y2='303' stroke='#555' stroke-width='2'/>
+  <line x1='250' y1='303' x2='250' y2='308' stroke='#555' stroke-width='2'/>
+
+  <!-- === LEFT SKATER 1 (back, smaller) === -->
+  <circle cx='142' cy='316' r='8' fill='#B07850'/>
+  <rect x='136' y='324' width='12' height='22' rx='3' fill='#9B59B6'/>
+  <line x1='136' y1='328' x2='124' y2='337' stroke='#9B59B6' stroke-width='5' stroke-linecap='round'/>
+  <line x1='148' y1='328' x2='157' y2='334' stroke='#9B59B6' stroke-width='5' stroke-linecap='round'/>
+  <rect x='134' y='346' width='7' height='16' rx='2' fill='#333'/>
+  <rect x='143' y='346' width='7' height='16' rx='2' fill='#333'/>
+  <rect x='126' y='362' width='26' height='5' rx='2' fill='#8B5A1A'/>
+  <circle cx='131' cy='367' r='3' fill='#222'/>
+  <circle cx='147' cy='367' r='3' fill='#222'/>
+
+  <!-- === LEFT SKATER 2 (foreground female, light blue) === -->
+  <!-- head -->
+  <circle cx='100' cy='305' r='13' fill='#E8C49A'/>
+  <!-- hair -->
+  <path d='M87 303 Q100 288 113 303 L113 310 Q100 306 87 310Z' fill='#8B4513'/>
+  <!-- headband -->
+  <rect x='87' y='300' width='26' height='5' rx='2' fill='#FF4466' opacity='0.85'/>
+  <!-- body light-blue top -->
+  <rect x='90' y='318' width='20' height='30' rx='4' fill='#7EC8E3'/>
+  <!-- arms spread -->
+  <line x1='90' y1='324' x2='72' y2='335' stroke='#E8C49A' stroke-width='6' stroke-linecap='round'/>
+  <line x1='110' y1='322' x2='126' y2='330' stroke='#E8C49A' stroke-width='6' stroke-linecap='round'/>
+  <!-- shorts -->
+  <rect x='90' y='346' width='9' height='22' rx='3' fill='#2A4A7A'/>
+  <rect x='101' y='346' width='9' height='22' rx='3' fill='#2A4A7A'/>
+  <!-- knee pads -->
+  <ellipse cx='94' cy='370' rx='6' ry='5' fill='#DDD'/>
+  <ellipse cx='106' cy='370' rx='6' ry='5' fill='#DDD'/>
+  <!-- shoes -->
+  <rect x='86' y='368' width='14' height='7' rx='3' fill='#111'/>
+  <rect x='100' y='366' width='14' height='7' rx='3' fill='#111'/>
+  <!-- skateboard -->
+  <rect x='78' y='375' width='38' height='7' rx='3' fill='#FFD700'/>
+  <circle cx='84' cy='382' r='4' fill='#222'/>
+  <circle cx='110' cy='382' r='4' fill='#222'/>
+  <!-- motion lines left -->
+  <line x1='42' y1='355' x2='74' y2='350' stroke='#FFB800' stroke-width='2' opacity='0.55' stroke-linecap='round'/>
+  <line x1='38' y1='367' x2='70' y2='364' stroke='#FF6600' stroke-width='1.5' opacity='0.45' stroke-linecap='round'/>
+
+  <!-- === CENTRE HERO SKATER (red hoodie) === -->
+  <!-- head -->
+  <circle cx='222' cy='290' r='15' fill='#8B5A2B'/>
+  <!-- curly hair -->
+  <path d='M207 288 Q222 273 237 288 Q233 277 222 275 Q211 277 207 288Z' fill='#1A0A00'/>
+  <!-- body red hoodie -->
+  <rect x='210' y='305' width='24' height='40' rx='5' fill='#CC2200'/>
+  <!-- arms spread wide -->
+  <line x1='210' y1='314' x2='188' y2='328' stroke='#CC2200' stroke-width='9' stroke-linecap='round'/>
+  <line x1='234' y1='312' x2='256' y2='305' stroke='#CC2200' stroke-width='9' stroke-linecap='round'/>
+  <circle cx='186' cy='329' r='6' fill='#8B5A2B'/>
+  <circle cx='258' cy='304' r='6' fill='#8B5A2B'/>
+  <!-- shorts -->
+  <rect x='210' y='343' width='10' height='28' rx='3' fill='#555'/>
+  <rect x='222' y='343' width='10' height='28' rx='3' fill='#555'/>
+  <!-- knee pads -->
+  <ellipse cx='214' cy='372' rx='7' ry='6' fill='#999'/>
+  <ellipse cx='228' cy='372' rx='7' ry='6' fill='#999'/>
+  <!-- shoes -->
+  <rect x='207' y='370' width='15' height='8' rx='3' fill='#111'/>
+  <rect x='221' y='368' width='15' height='8' rx='3' fill='#111'/>
+  <!-- skateboard -->
+  <rect x='198' y='378' width='48' height='9' rx='4' fill='#FF9900'/>
+  <circle cx='206' cy='387' r='5' fill='#222'/>
+  <circle cx='238' cy='387' r='5' fill='#222'/>
+
+  <!-- === RIGHT CYCLIST 1 (female, orange top) === -->
+  <!-- head -->
+  <circle cx='345' cy='295' r='13' fill='#E8C49A'/>
+  <!-- hair flowing back -->
+  <path d='M335 292 Q345 278 360 295 L362 308 Q352 303 335 305Z' fill='#D4A843'/>
+  <!-- helmet -->
+  <path d='M333 293 Q345 278 358 293' fill='#4A90D9' opacity='0.8'/>
+  <!-- body orange top -->
+  <rect x='335' y='308' width='20' height='28' rx='4' fill='#FF7733'/>
+  <!-- arms on handlebar -->
+  <line x1='335' y1='315' x2='316' y2='327' stroke='#E8C49A' stroke-width='6' stroke-linecap='round'/>
+  <line x1='355' y1='313' x2='368' y2='325' stroke='#E8C49A' stroke-width='6' stroke-linecap='round'/>
+  <!-- legs -->
+  <line x1='345' y1='336' x2='330' y2='360' stroke='#2A4A7A' stroke-width='7' stroke-linecap='round'/>
+  <line x1='345' y1='336' x2='358' y2='356' stroke='#2A4A7A' stroke-width='7' stroke-linecap='round'/>
+  <!-- bike frame red -->
+  <line x1='315' y1='327' x2='370' y2='325' stroke='#CC2200' stroke-width='4'/>
+  <line x1='345' y1='325' x2='345' y2='355' stroke='#CC2200' stroke-width='4'/>
+  <line x1='315' y1='327' x2='333' y2='357' stroke='#CC2200' stroke-width='3'/>
+  <line x1='370' y1='325' x2='356' y2='357' stroke='#CC2200' stroke-width='3'/>
+  <!-- handlebar -->
+  <line x1='312' y1='322' x2='322' y2='322' stroke='#555' stroke-width='3'/>
+  <!-- wheels -->
+  <circle cx='315' cy='357' r='23' fill='none' stroke='#FFD700' stroke-width='4'/>
+  <circle cx='370' cy='355' r='23' fill='none' stroke='#FFD700' stroke-width='4'/>
+  <circle cx='315' cy='357' r='4' fill='#444'/>
+  <circle cx='370' cy='355' r='4' fill='#444'/>
+  <!-- spokes -->
+  <line x1='315' y1='334' x2='315' y2='380' stroke='#AAA' stroke-width='1' opacity='0.5'/>
+  <line x1='292' y1='357' x2='338' y2='357' stroke='#AAA' stroke-width='1' opacity='0.5'/>
+  <line x1='370' y1='332' x2='370' y2='378' stroke='#AAA' stroke-width='1' opacity='0.5'/>
+  <line x1='347' y1='355' x2='393' y2='355' stroke='#AAA' stroke-width='1' opacity='0.5'/>
+
+  <!-- === RIGHT CYCLIST 2 (yellow shirt, backpack) === -->
+  <!-- head -->
+  <circle cx='415' cy='292' r='12' fill='#C8945A'/>
+  <!-- cap -->
+  <rect x='404' y='282' width='22' height='9' rx='3' fill='#4A90D9'/>
+  <rect x='400' y='286' width='7' height='5' rx='1' fill='#4A90D9'/>
+  <!-- body yellow -->
+  <rect x='406' y='304' width='18' height='26' rx='4' fill='#FFD700'/>
+  <!-- backpack -->
+  <rect x='422' y='302' width='13' height='22' rx='3' fill='#5A3A1A'/>
+  <!-- arms -->
+  <line x1='406' y1='310' x2='390' y2='320' stroke='#C8945A' stroke-width='6' stroke-linecap='round'/>
+  <line x1='424' y1='309' x2='437' y2='318' stroke='#C8945A' stroke-width='6' stroke-linecap='round'/>
+  <!-- legs -->
+  <line x1='415' y1='330' x2='402' y2='352' stroke='#333' stroke-width='6' stroke-linecap='round'/>
+  <line x1='415' y1='330' x2='426' y2='348' stroke='#333' stroke-width='6' stroke-linecap='round'/>
+  <!-- bike frame -->
+  <line x1='388' y1='320' x2='442' y2='318' stroke='#666' stroke-width='3.5'/>
+  <line x1='415' y1='318' x2='415' y2='346' stroke='#666' stroke-width='3.5'/>
+  <line x1='388' y1='320' x2='404' y2='348' stroke='#666' stroke-width='3'/>
+  <line x1='442' y1='318' x2='428' y2='348' stroke='#666' stroke-width='3'/>
+  <!-- wheels -->
+  <circle cx='388' cy='348' r='20' fill='none' stroke='#CC2200' stroke-width='3.5'/>
+  <circle cx='442' cy='348' r='20' fill='none' stroke='#CC2200' stroke-width='3.5'/>
+  <circle cx='388' cy='348' r='3' fill='#444'/>
+  <circle cx='442' cy='348' r='3' fill='#444'/>
+  <!-- motion lines right -->
+  <line x1='458' y1='338' x2='490' y2='343' stroke='#FFB800' stroke-width='2' opacity='0.55' stroke-linecap='round'/>
+  <line x1='460' y1='352' x2='490' y2='355' stroke='#FF6600' stroke-width='1.5' opacity='0.45' stroke-linecap='round'/>
+
+  <!-- Label -->
+  <text x='250' y='478' text-anchor='middle' font-family='Georgia, serif' font-size='18' fill='#FFE566' font-weight='bold'>⚡ Blazing Youth</text>
+</svg>`;
+
+    // 3️⃣ Settled Midlife: man at balcony railing overlooking a pine forest lake at golden sunset
+    const midlifeSVG = `<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'>
+  <defs>
+    <linearGradient id='sunsetSky' x1='0%' y1='0%' x2='0%' y2='100%'>
+      <stop offset='0%' stop-color='#7B3A10'/>
+      <stop offset='30%' stop-color='#D4601A'/>
+      <stop offset='60%' stop-color='#F0A030'/>
+      <stop offset='100%' stop-color='#FFD080'/>
+    </linearGradient>
+    <radialGradient id='sunGlow' cx='62%' cy='52%' r='18%'>
+      <stop offset='0%' stop-color='#FFF5A0' stop-opacity='1'/>
+      <stop offset='50%' stop-color='#FFB830' stop-opacity='0.6'/>
+      <stop offset='100%' stop-color='#FF8800' stop-opacity='0'/>
+    </radialGradient>
+    <linearGradient id='lakeGrad' x1='0%' y1='0%' x2='0%' y2='100%'>
+      <stop offset='0%' stop-color='#C07020'/>
+      <stop offset='40%' stop-color='#3A5A40'/>
+      <stop offset='100%' stop-color='#1A2A1E'/>
+    </linearGradient>
+    <linearGradient id='deckGrad' x1='0%' y1='0%' x2='0%' y2='100%'>
+      <stop offset='0%' stop-color='#8B5A2B'/>
+      <stop offset='100%' stop-color='#5A3010'/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width='500' height='500' fill='url(#sunsetSky)'/>
+  <!-- Sky colour variation patches (painterly) -->
+  <ellipse cx='80' cy='60' rx='120' ry='60' fill='#5A2010' opacity='0.4'/>
+  <ellipse cx='420' cy='80' rx='100' ry='55' fill='#AA4010' opacity='0.3'/>
+  <ellipse cx='250' cy='100' rx='180' ry='70' fill='#F0A030' opacity='0.2'/>
+  <!-- Sun glow -->
+  <circle cx='310' cy='195' r='22' fill='#FFF5A0' opacity='0.95'/>
+  <circle cx='310' cy='195' r='38' fill='#FFD060' opacity='0.4'/>
+  <rect width='500' height='500' fill='url(#sunGlow)' opacity='0.6'/>
+
+  <!-- Far treeline (distant, small, purple-blue haze) -->
+  <!-- hill silhouette -->
+  <ellipse cx='250' cy='215' rx='280' ry='30' fill='#6A8070' opacity='0.5'/>
+  <!-- distant trees row -->
+  <rect x='0' y='185' width='18' height='35' rx='4' fill='#4A6050' opacity='0.6'/>
+  <rect x='14' y='178' width='20' height='42' rx='5' fill='#3A5040' opacity='0.6'/>
+  <rect x='30' y='182' width='16' height='38' rx='4' fill='#4A6050' opacity='0.55'/>
+  <rect x='44' y='175' width='18' height='45' rx='5' fill='#3A5040' opacity='0.6'/>
+  <rect x='60' y='180' width='15' height='40' rx='4' fill='#506858' opacity='0.55'/>
+  <rect x='72' y='172' width='20' height='48' rx='5' fill='#3A5040' opacity='0.6'/>
+  <rect x='88' y='178' width='16' height='42' rx='4' fill='#4A6050' opacity='0.55'/>
+  <rect x='102' y='170' width='18' height='50' rx='5' fill='#3A5040' opacity='0.6'/>
+  <rect x='118' y='175' width='15' height='45' rx='4' fill='#506858' opacity='0.55'/>
+  <rect x='130' y='168' width='20' height='52' rx='5' fill='#3A5040' opacity='0.6'/>
+  <rect x='148' y='173' width='16' height='47' rx='4' fill='#4A6050' opacity='0.55'/>
+  <rect x='162' y='165' width='18' height='55' rx='5' fill='#3A5040' opacity='0.6'/>
+  <!-- right side distant trees -->
+  <rect x='340' y='172' width='18' height='48' rx='5' fill='#3A5040' opacity='0.6'/>
+  <rect x='356' y='178' width='16' height='42' rx='4' fill='#4A6050' opacity='0.55'/>
+  <rect x='370' y='170' width='20' height='50' rx='5' fill='#3A5040' opacity='0.6'/>
+  <rect x='388' y='175' width='15' height='45' rx='4' fill='#506858' opacity='0.55'/>
+  <rect x='400' y='168' width='18' height='52' rx='5' fill='#3A5040' opacity='0.6'/>
+  <rect x='416' y='174' width='16' height='46' rx='4' fill='#4A6050' opacity='0.55'/>
+  <rect x='430' y='166' width='20' height='54' rx='5' fill='#3A5040' opacity='0.6'/>
+  <rect x='448' y='172' width='16' height='48' rx='4' fill='#506858' opacity='0.55'/>
+  <rect x='462' y='165' width='20' height='55' rx='5' fill='#3A5040' opacity='0.6'/>
+  <rect x='480' y='170' width='20' height='50' rx='5' fill='#3A5040' opacity='0.6'/>
+
+  <!-- FOREGROUND LEFT PINE TREES (dark green, tall) -->
+  <!-- tree trunks -->
+  <rect x='18' y='270' width='8' height='100' fill='#3A2010'/>
+  <rect x='52' y='260' width='9' height='110' fill='#3A2010'/>
+  <!-- pine canopy layers -->
+  <polygon points='22,270 2,310 42,310' fill='#1E4020'/>
+  <polygon points='22,248 -2,295 46,295' fill='#246030'/>
+  <polygon points='22,228 0,278 44,278' fill='#2A7040'/>
+  <polygon points='22,210 2,260 42,260' fill='#1E4828'/>
+  <polygon points='56,260 34,302 78,302' fill='#1E4020'/>
+  <polygon points='56,238 30,288 82,288' fill='#246030'/>
+  <polygon points='56,218 32,272 80,272' fill='#2A7040'/>
+  <polygon points='56,200 34,254 78,254' fill='#1E4828'/>
+  <!-- golden highlight on left trees from sun -->
+  <polygon points='22,228 38,258 44,278' fill='#8B7020' opacity='0.3'/>
+  <polygon points='56,218 72,252 80,272' fill='#8B7020' opacity='0.28'/>
+
+  <!-- FOREGROUND RIGHT PINE TREES -->
+  <rect x='420' y='250' width='8' height='120' fill='#3A2010'/>
+  <rect x='455' y='240' width='9' height='130' fill='#3A2010'/>
+  <rect x='484' y='255' width='8' height='115' fill='#3A2010'/>
+  <polygon points='424,250 402,295 446,295' fill='#1E4020'/>
+  <polygon points='424,228 398,280 450,280' fill='#246030'/>
+  <polygon points='424,208 400,264 448,264' fill='#2A7040'/>
+  <polygon points='424,190 402,248 446,248' fill='#1E4828'/>
+  <polygon points='459,240 437,285 481,285' fill='#1E4020'/>
+  <polygon points='459,218 433,272 485,272' fill='#246030'/>
+  <polygon points='459,198 435,256 483,256' fill='#2A7040'/>
+  <polygon points='488,255 468,298 500,298' fill='#1E4020'/>
+  <polygon points='488,235 466,284 500,284' fill='#246030'/>
+
+  <!-- LAKE -->
+  <ellipse cx='260' cy='295' rx='175' ry='55' fill='url(#lakeGrad)'/>
+  <!-- Sun reflection on lake -->
+  <ellipse cx='295' cy='295' rx='28' ry='10' fill='#FFD060' opacity='0.7'/>
+  <ellipse cx='295' cy='295' rx='12' ry='4' fill='#FFFAA0' opacity='0.9'/>
+  <!-- Lake shimmer strokes -->
+  <line x1='140' y1='288' x2='200' y2='290' stroke='#C07830' stroke-width='1.5' opacity='0.45'/>
+  <line x1='145' y1='296' x2='215' y2='298' stroke='#A06020' stroke-width='1.5' opacity='0.4'/>
+  <line x1='340' y1='286' x2='400' y2='289' stroke='#C07830' stroke-width='1.5' opacity='0.4'/>
+  <line x1='335' y1='298' x2='398' y2='300' stroke='#A06020' stroke-width='1.5' opacity='0.38'/>
+  <line x1='230' y1='305' x2='320' y2='307' stroke='#A06020' stroke-width='1' opacity='0.35'/>
+
+  <!-- DECK / BALCONY floor -->
+  <rect x='0' y='350' width='500' height='150' fill='url(#deckGrad)'/>
+  <!-- deck planks -->
+  <line x1='0' y1='365' x2='500' y2='365' stroke='#6B4010' stroke-width='1.5' opacity='0.5'/>
+  <line x1='0' y1='382' x2='500' y2='382' stroke='#6B4010' stroke-width='1.5' opacity='0.5'/>
+  <line x1='0' y1='399' x2='500' y2='399' stroke='#6B4010' stroke-width='1.5' opacity='0.4'/>
+  <line x1='0' y1='418' x2='500' y2='418' stroke='#6B4010' stroke-width='1.5' opacity='0.4'/>
+
+  <!-- RAILING -->
+  <!-- top rail -->
+  <rect x='0' y='348' width='500' height='8' rx='2' fill='#B0B8C0'/>
+  <!-- bottom rail -->
+  <rect x='0' y='370' width='500' height='5' rx='1' fill='#909AA0' opacity='0.8'/>
+  <!-- vertical balusters -->
+  <rect x='20' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='50' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='80' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='110' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='140' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='170' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='200' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='230' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='260' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='290' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='320' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='350' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='380' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='410' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='440' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+  <rect x='470' y='348' width='4' height='30' rx='1' fill='#8A9298'/>
+
+  <!-- MAN FIGURE (left side, profile facing right) -->
+  <!-- shadow on deck -->
+  <ellipse cx='155' cy='430' rx='45' ry='10' fill='#2A1A08' opacity='0.4'/>
+  <!-- legs / dark trousers -->
+  <rect x='128' y='380' width='18' height='90' rx='5' fill='#1E2A3A'/>
+  <rect x='148' y='380' width='18' height='90' rx='5' fill='#253040'/>
+  <!-- belt -->
+  <rect x='125' y='378' width='44' height='6' rx='2' fill='#1A1008'/>
+  <!-- body: tan/brown jacket -->
+  <rect x='120' y='290' width='52' height='95' rx='8' fill='#B07830'/>
+  <!-- jacket lapel / inner shirt -->
+  <polygon points='152,290 162,290 160,350 148,350' fill='#E8DCC8' opacity='0.9'/>
+  <!-- jacket highlight (golden light from right) -->
+  <rect x='155' y='290' width='17' height='90' rx='5' fill='#D4A050' opacity='0.45'/>
+  <!-- left arm relaxed at side -->
+  <rect x='108' y='300' width='14' height='65' rx='6' fill='#A06820'/>
+  <!-- right arm resting on rail -->
+  <path d='M170 330 Q190 345 200 352' stroke='#A06820' stroke-width='14' fill='none' stroke-linecap='round'/>
+  <!-- right hand on rail -->
+  <ellipse cx='202' cy='354' rx='9' ry='6' fill='#C8945A'/>
+  <!-- neck -->
+  <rect x='148' y='275' width='16' height='18' rx='4' fill='#C8945A'/>
+  <!-- head (profile facing right) -->
+  <ellipse cx='162' cy='258' rx='24' ry='26' fill='#C8945A'/>
+  <!-- hair (dark with grey) -->
+  <path d='M140 248 Q150 228 175 232 Q185 240 178 248 Q168 238 155 240 Q145 244 140 248Z' fill='#3A3028'/>
+  <path d='M140 248 Q138 255 142 262 Q144 250 150 246' fill='#3A3028'/>
+  <!-- ear -->
+  <ellipse cx='140' cy='260' rx='5' ry='7' fill='#B87848'/>
+  <!-- glasses -->
+  <ellipse cx='166' cy='256' rx='10' ry='7' fill='none' stroke='#5A4A30' stroke-width='2'/>
+  <line x1='156' y1='256' x2='145' y2='257' stroke='#5A4A30' stroke-width='2'/>
+  <!-- nose (profile) -->
+  <path d='M175 262 Q182 268 178 275' stroke='#B07848' stroke-width='2.5' fill='none' stroke-linecap='round'/>
+  <!-- jaw / chin profile -->
+  <path d='M175 275 Q178 285 172 292' stroke='#B07848' stroke-width='2' fill='none' stroke-linecap='round'/>
+  <!-- golden light on face -->
+  <ellipse cx='170' cy='260' rx='12' ry='14' fill='#FFB830' opacity='0.18'/>
+
+  <!-- Label -->
+  <text x='250' y='488' text-anchor='middle' font-family='Georgia, serif' font-size='18' fill='#FFD080' font-weight='bold'>🌲 Settled Midlife</text>
+</svg>`;
+
+    // 4️⃣ Shattered Serenity: painterly pink-grey background, luminous figure from behind, shattered mirror shards radiating outward with teal lake reflections
+    const mirrorSVG = `<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'>
+  <defs>
+    <linearGradient id='mirBg' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#8E9BA8'/>
+      <stop offset='45%' stop-color='#C4A8B2'/>
+      <stop offset='100%' stop-color='#EEC8CC'/>
+    </linearGradient>
+    <linearGradient id='sA' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#D0E8EC'/>
+      <stop offset='50%' stop-color='#A8D0D8'/>
+      <stop offset='100%' stop-color='#88B8C4'/>
+    </linearGradient>
+    <linearGradient id='sB' x1='1' y1='0' x2='0' y2='1'>
+      <stop offset='0%' stop-color='#E8F4F4'/>
+      <stop offset='50%' stop-color='#B4D4DC'/>
+      <stop offset='100%' stop-color='#90BEC8'/>
+    </linearGradient>
+    <linearGradient id='sC' x1='0' y1='1' x2='1' y2='0'>
+      <stop offset='0%' stop-color='#C8E0E8'/>
+      <stop offset='60%' stop-color='#EEF8F8'/>
+      <stop offset='100%' stop-color='#B8D4DC'/>
+    </linearGradient>
+    <radialGradient id='fGlow' cx='50%' cy='40%' r='45%'>
+      <stop offset='0%' stop-color='#FFFFFF'/>
+      <stop offset='35%' stop-color='#FFF5EE' stop-opacity='0.9'/>
+      <stop offset='75%' stop-color='#FFE8DC' stop-opacity='0.4'/>
+      <stop offset='100%' stop-color='#F0C8C0' stop-opacity='0'/>
+    </radialGradient>
+    <radialGradient id='cGlow' cx='50%' cy='50%' r='50%'>
+      <stop offset='0%' stop-color='#FFFFFF'/>
+      <stop offset='50%' stop-color='#F8F8F0' stop-opacity='0.7'/>
+      <stop offset='100%' stop-color='#E0E8E8' stop-opacity='0'/>
+    </radialGradient>
+  </defs>
+  <rect width='500' height='500' fill='url(#mirBg)'/>
+  <ellipse cx='75' cy='95' rx='88' ry='55' fill='#8A97A4' opacity='0.5' transform='rotate(-15 75 95)'/>
+  <ellipse cx='125' cy='55' rx='65' ry='38' fill='#9DAAB5' opacity='0.4' transform='rotate(-22 125 55)'/>
+  <ellipse cx='38' cy='178' rx='58' ry='36' fill='#87969F' opacity='0.45' transform='rotate(12 38 178)'/>
+  <ellipse cx='160' cy='150' rx='55' ry='25' fill='#9AA5B0' opacity='0.3' transform='rotate(-8 160 150)'/>
+  <ellipse cx='418' cy='75' rx='95' ry='52' fill='#E4B2BC' opacity='0.55' transform='rotate(8 418 75)'/>
+  <ellipse cx='458' cy='138' rx='68' ry='42' fill='#ECC0C8' opacity='0.45' transform='rotate(-6 458 138)'/>
+  <ellipse cx='375' cy='38' rx='58' ry='32' fill='#D0A4B0' opacity='0.4' transform='rotate(18 375 38)'/>
+  <ellipse cx='345' cy='195' rx='72' ry='28' fill='#D8BCBE' opacity='0.3' transform='rotate(14 345 195)'/>
+  <ellipse cx='345' cy='418' rx='95' ry='52' fill='#E4C4C8' opacity='0.38' transform='rotate(-10 345 418)'/>
+  <ellipse cx='145' cy='435' rx='78' ry='38' fill='#C8ACAC' opacity='0.32' transform='rotate(7 145 435)'/>
+  <polygon points='250,315 205,195 252,155 295,195' fill='url(#sB)' stroke='#FFFFFF' stroke-width='1.8' opacity='0.82'/>
+  <polygon points='250,315 158,215 118,280 165,305' fill='url(#sA)' stroke='#FFFFFF' stroke-width='1.5' opacity='0.8'/>
+  <polygon points='250,315 342,215 382,272 332,302' fill='url(#sC)' stroke='#FFFFFF' stroke-width='1.5' opacity='0.8'/>
+  <polygon points='250,315 148,225 95,185 125,270' fill='url(#sC)' stroke='#FFFFFF' stroke-width='1.2' opacity='0.75'/>
+  <polygon points='250,315 352,225 405,185 375,268' fill='url(#sA)' stroke='#FFFFFF' stroke-width='1.2' opacity='0.75'/>
+  <polygon points='250,315 162,355 128,432 222,428' fill='url(#sB)' stroke='#FFFFFF' stroke-width='1.5' opacity='0.78'/>
+  <polygon points='250,315 338,355 372,432 278,428' fill='url(#sA)' stroke='#FFFFFF' stroke-width='1.5' opacity='0.78'/>
+  <polygon points='250,315 138,275 88,345 152,380' fill='url(#sC)' stroke='#FFFFFF' stroke-width='1.2' opacity='0.72'/>
+  <polygon points='250,315 362,275 412,345 348,380' fill='url(#sB)' stroke='#FFFFFF' stroke-width='1.2' opacity='0.72'/>
+  <polygon points='250,315 135,368 82,440 178,448' fill='url(#sA)' stroke='#FFFFFF' stroke-width='1' opacity='0.65'/>
+  <polygon points='250,315 365,368 418,440 322,448' fill='url(#sC)' stroke='#FFFFFF' stroke-width='1' opacity='0.65'/>
+  <polygon points='88,192 52,155 35,215 72,232' fill='url(#sA)' stroke='#FFFFFF' stroke-width='1' opacity='0.72'/>
+  <polygon points='412,188 448,152 465,212 428,228' fill='url(#sC)' stroke='#FFFFFF' stroke-width='1' opacity='0.72'/>
+  <polygon points='62,338 22,295 15,378 55,385' fill='url(#sB)' stroke='#FFFFFF' stroke-width='1' opacity='0.68'/>
+  <polygon points='438,332 478,290 485,362 448,372' fill='url(#sA)' stroke='#FFFFFF' stroke-width='1' opacity='0.68'/>
+  <polygon points='118,448 72,428 65,472 112,478' fill='url(#sC)' stroke='#FFFFFF' stroke-width='0.8' opacity='0.62'/>
+  <polygon points='382,448 428,428 435,472 388,478' fill='url(#sB)' stroke='#FFFFFF' stroke-width='0.8' opacity='0.62'/>
+  <polygon points='175,72 155,52 140,78 162,90' fill='url(#sB)' stroke='#FFFFFF' stroke-width='0.8' opacity='0.7'/>
+  <polygon points='312,65 332,45 348,72 326,85' fill='url(#sA)' stroke='#FFFFFF' stroke-width='0.8' opacity='0.7'/>
+  <polygon points='244,45 258,30 268,52 252,62' fill='url(#sC)' stroke='#FFFFFF' stroke-width='0.7' opacity='0.65'/>
+  <polygon points='422,95 442,80 450,105 432,115' fill='url(#sA)' stroke='#FFFFFF' stroke-width='0.7' opacity='0.65'/>
+  <polygon points='55,125 38,110 33,138 50,145' fill='url(#sB)' stroke='#FFFFFF' stroke-width='0.7' opacity='0.65'/>
+  <polygon points='462,235 480,220 485,248 468,255' fill='url(#sC)' stroke='#FFFFFF' stroke-width='0.7' opacity='0.6'/>
+  <polygon points='15,238 5,222 2,248 18,255' fill='url(#sA)' stroke='#FFFFFF' stroke-width='0.7' opacity='0.6'/>
+  <polygon points='188,32 202,18 212,38 198,48' fill='url(#sB)' stroke='#FFFFFF' stroke-width='0.6' opacity='0.6'/>
+  <polygon points='298,28 312,15 320,35 306,44' fill='url(#sC)' stroke='#FFFFFF' stroke-width='0.6' opacity='0.6'/>
+  <g stroke='#303030' stroke-width='1.5' opacity='0.5'>
+    <line x1='250' y1='315' x2='155' y2='215'/>
+    <line x1='250' y1='315' x2='345' y2='215'/>
+    <line x1='250' y1='315' x2='108' y2='278'/>
+    <line x1='250' y1='315' x2='392' y2='275'/>
+    <line x1='250' y1='315' x2='160' y2='358'/>
+    <line x1='250' y1='315' x2='340' y2='358'/>
+    <line x1='250' y1='315' x2='208' y2='185'/>
+    <line x1='250' y1='315' x2='292' y2='185'/>
+    <line x1='250' y1='315' x2='250' y2='155'/>
+  </g>
+  <ellipse cx='250' cy='225' rx='85' ry='120' fill='url(#fGlow)' opacity='0.85'/>
+  <ellipse cx='250' cy='215' rx='50' ry='70' fill='#FFFCF8' opacity='0.65'/>
+  <ellipse cx='250' cy='188' rx='36' ry='18' fill='#F8F2EE' opacity='0.82'/>
+  <ellipse cx='250' cy='222' rx='26' ry='42' fill='#F5EDE8' opacity='0.88'/>
+  <ellipse cx='250' cy='153' rx='19' ry='21' fill='#EEE6E2' opacity='0.85'/>
+  <ellipse cx='250' cy='143' rx='21' ry='11' fill='#8C7868' opacity='0.72'/>
+  <path d='M232,142 Q238,132 246,145' stroke='#8C7868' stroke-width='6' fill='none' stroke-linecap='round' opacity='0.6'/>
+  <path d='M255,140 Q262,130 268,143' stroke='#8C7868' stroke-width='5' fill='none' stroke-linecap='round' opacity='0.6'/>
+  <ellipse cx='250' cy='228' rx='28' ry='48' fill='#FFFFFF' opacity='0.45'/>
+  <ellipse cx='222' cy='218' rx='7.5' ry='26' fill='#F0E6E0' opacity='0.78' transform='rotate(-6 222 218)'/>
+  <ellipse cx='278' cy='218' rx='7.5' ry='26' fill='#F0E6E0' opacity='0.78' transform='rotate(6 278 218)'/>
+  <circle cx='250' cy='315' r='28' fill='url(#cGlow)' opacity='0.88'/>
+  <circle cx='250' cy='315' r='12' fill='#FFFFFF' opacity='0.95'/>
+  <circle cx='250' cy='315' r='5' fill='#FFFFFF' opacity='1'/>
+  <g fill='#FFFFFF' opacity='0.92'>
+    <circle cx='205' cy='196' r='2.5'/>
+    <circle cx='295' cy='196' r='2.5'/>
+    <circle cx='160' cy='218' r='2.2'/>
+    <circle cx='340' cy='218' r='2.2'/>
+    <circle cx='118' cy='283' r='2'/>
+    <circle cx='382' cy='275' r='2'/>
+    <circle cx='163' cy='358' r='2'/>
+    <circle cx='337' cy='358' r='2'/>
+    <circle cx='220' cy='428' r='1.8'/>
+    <circle cx='280' cy='428' r='1.8'/>
+  </g>
+  <g fill='#FFFFFF' opacity='0.78'>
+    <circle cx='162' cy='73' r='1.5'/>
+    <circle cx='318' cy='66' r='1.5'/>
+    <circle cx='246' cy='46' r='1.2'/>
+    <circle cx='435' cy='98' r='1.3'/>
+    <circle cx='53' cy='128' r='1.3'/>
+    <circle cx='474' cy='238' r='1.2'/>
+    <circle cx='12' cy='240' r='1.2'/>
+    <circle cx='58' cy='342' r='1.3'/>
+    <circle cx='442' cy='336' r='1.3'/>
+    <circle cx='195' cy='33' r='1.1'/>
+    <circle cx='305' cy='29' r='1.1'/>
+  </g>
+  <text x='250' y='480' font-family='Georgia, serif' font-size='15' fill='#C89098' text-anchor='middle' font-style='italic'>🕊️ Shattered Serenity</text>
+</svg>`;
+
+    // Endings object — maps key to SVG string (used by Member 1)
+    const endings = {
+        childhood: childhoodSVG,
+        youth: youthSVG,
+        midlife: midlifeSVG,
+        mirror: mirrorSVG
+    };
+
+    // Display title and colour per ending
+    const meta = {
+        childhood: { name: "Childhood Wonder", color: "#6EC6F5" },
+        youth: { name: "Blazing Youth", color: "#FFB347" },
+        midlife: { name: "Settled Midlife", color: "#D4601A" },
+        mirror: { name: "Shattered Serenity", color: "#C89098" }
+    };
+
+    // ======================= Render UI =======================
+    function renderCards() {
+        const grid = document.getElementById('cardsGrid');
+        grid.innerHTML = '';
+        
+        const keys = ['childhood', 'youth', 'midlife', 'mirror'];
+        keys.forEach(key => {
+            const svgString = endings[key];
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <h2 style="color:${meta[key].color === '#F8F9FA' ? '#333' : '#ffd966'}">✨ ${meta[key].name}</h2>
+                <div class="svg-preview">
+                    ${svgString}
+                </div>
+                <div class="code-area">
+                    <pre id="pre_${key}">${escapeHtml(svgString)}</pre>
+                </div>
+                <button class="copy-btn" data-key="${key}">📋 Copy Single-line String</button>
+                <button class="view-btn" data-svg="${escapeHtml(svgString)}">🔍 Full Preview</button>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Bind copy buttons
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const key = btn.getAttribute('data-key');
+                const svg = endings[key];
+                copyToClipboard(svg);
+                alert(`✅ Copied "${meta[key].name}" SVG as a single line`);
+            });
+        });
+
+        // Full preview in new tab
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const rawSvg = btn.getAttribute('data-svg');
+                const win = window.open();
+                win.document.write(`
+                    <html><head><title>SVG Preview</title><style>body{background:#333;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;}</style></head>
+                    <body>${rawSvg}</body>
+                `);
+            });
+        });
+    }
+
+    // Build the full SVG object for Member 1
+    function updateCombinedOutput() {
+        // Clean JSON object containing the four ending SVG strings (Member 1 references this directly)
+        const outputObj = {
+            // Keys can be renamed to match contract requirements (e.g. 0 1 2 3)
+            "Childhood Wonder": endings.childhood,
+            "Blazing Youth": endings.youth,
+            "Settled Midlife": endings.midlife,
+            "Shattered Serenity": endings.mirror,
+            // Array version also provided for index-based contract access
+            "svgList": [endings.childhood, endings.youth, endings.midlife, endings.mirror]
+        };
+        
+        const jsonStr = JSON.stringify(outputObj, null, 2);
+        document.getElementById('combinedOutput').innerHTML = `<pre style="margin:0; white-space:pre-wrap; font-size:11px;">${escapeHtml(jsonStr)}</pre>`;
+        
+        document.getElementById('copyAllBtn').onclick = () => {
+            copyToClipboard(jsonStr);
+            alert('📦 Copied full JSON (contains 4 SVG strings)');
+        };
+    }
+
+    // Helper: copy to clipboard
+    function copyToClipboard(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // Initialise
+    renderCards();
+    updateCombinedOutput();
+</script>
+</body>
+</html>
