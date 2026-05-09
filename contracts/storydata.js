@@ -1,68 +1,68 @@
 {
-  "title": "镜中庭",
-  "intro": "你推开一扇虚掩的木门，走进一座被月光浸润的古老庭院。中央矗立着一面巨大的镜子，它不只映照容貌，更映照一生。雾气升腾，一个缥缈的声音响起：“选择吧，每一次落笔，都会改变镜中的你。”",
+  "title": "Mirror Court",
+  "intro": "You push open an ancient wooden door entwined with vines and step into the moonlit Mirror Court. At its center stands a massive bronze mirror that reflects not only your appearance, but the entirety of your life. As mist swirls around you, an ancient, ethereal voice echoes: “Here, every choice you make will be etched into the mirror, becoming your eternal reflection…”",
   
   "scenes": {
     "0": {
       "id": 0,
-      "description": "你站在镜中庭中央，面前的古老镜子蒙着薄雾，像一张等待书写的白纸。童年的气息与成年的重量同时涌来。一个温柔却不容拒绝的声音响起：“在镜上留下你的第一笔吧，它将定义旅程的起点。”",
+      "description": "You stand before the mirror. Its surface is calm like still water, veiled in a thin layer of mist — a blank canvas waiting to be written upon. The innocence of childhood and the weight of adulthood surge within you at the same time. The voice speaks gently yet firmly: “Leave your first stroke upon the mirror. It will define the tone of your life’s journey.”",
       "options": [
-        { "text": "画螺旋", "value": 0 },
-        { "text": "画直线", "value": 1 }
+        { "text": "Draw a Spiral", "value": 0 },
+        { "text": "Draw a Straight Line", "value": 1 }
       ]
     },
     "1": {
       "id": 1,
-      "description": "镜面开始流动，你的笔触化作光影。周围的庭院景象随你的选择而变幻。你感受到青春的悸动与未来的召唤。那个声音再次响起，带着期许：",
+      "description": "Your strokes transform into flowing light and shadow within the mirror. The plants in the courtyard sway according to your choice, as if time itself has been gently nudged. You feel the throbbing of youth, the call of the future, and a faint unease deep in your heart. The voice returns, carrying both expectation and gentle challenge:",
       "options": [
-        { "text": "鼓励冒险", "value": 0 },
-        { "text": "建议安稳", "value": 1 }
+        { "text": "Encourage Adventure", "value": 0 },
+        { "text": "Suggest Stability", "value": 1 }
       ]
     },
     "2": {
       "id": 2,
-      "description": "时光在镜中加速流逝。你看见无数个自己，有的勇敢前行，有的谨慎停留。镜面渐渐出现裂纹般的纹路，那是岁月的刻痕。声音变得低沉而温柔：",
+      "description": "The scenes in the mirror begin to accelerate. You see countless versions of yourself — hesitating at crossroads, gazing from great heights, sitting alone in the night. Fine cracks like veins of time appear across the mirror’s surface. The voice grows deeper and warmer, like an elder who has witnessed many seasons:",
       "options": [
-        { "text": "后悔未说出口的话", "value": 0 },
-        { "text": "后悔做过的事", "value": 1 }
+        { "text": "Regret Words Left Unspoken", "value": 0 },
+        { "text": "Regret Things Done", "value": 1 }
       ]
     },
     "3": {
       "id": 3,
-      "description": "镜中庭忽然安静下来。无数镜像围绕着你——幼时的你、青年的你、中年的你，以及此刻的你。所有道路在此交汇。最终的声音响起，不带任何评判：",
+      "description": "The entire Mirror Court falls into profound silence. Countless versions of you emerge from the mirror: the innocent child, the passionate youth, the steady middle-aged adult, and the present you, dressed in flowing white. All paths converge here. All possibilities freeze in this moment. The final voice speaks without judgment, reaching straight into your soul:",
       "options": [
-        { "text": "童年", "value": 0 },
-        { "text": "青年", "value": 1 },
-        { "text": "中年", "value": 2 },
-        { "text": "此刻的释然", "value": 3 }
+        { "text": "Childhood", "value": 0 },
+        { "text": "Youth", "value": 1 },
+        { "text": "Middle Age", "value": 2 },
+        { "text": "Present Enlightenment", "value": 3 }
       ]
     }
   },
 
   "endings": {
     "0": {
-      "title": "童真时刻",
-      "description": "你回到了无忧无虑的童年。蜡笔在镜上绘出彩虹，世界永远明亮而柔软。所有的烦恼不过是轻轻一擦就能消失的雾气。你笑着奔跑，身后是永远追不上的风。",
+      "title": "Childhood Wonder",
+      "description": "You return to a carefree childhood. Colorful crayons dance wildly across the mirror, painting vibrant rainbows, crooked little houses, and a sun that never stops smiling. The world remains soft and bright forever. All troubles are merely mist that can be wiped away with a gentle stroke. You run barefoot through the courtyard, chasing a warm wind that can never be caught.",
       "svgKey": "childhood",
-      "nftDescription": "镜中庭·童真时刻：蜡笔绘出彩虹，世界永远明亮。"
+      "nftDescription": "Mirror Court · Childhood Wonder: Crayons paint rainbows — the world remains forever bright and tender."
     },
     "1": {
-      "title": "炽热青春",
-      "description": "火焰般的热血在胸中奔涌。你化身为永不停歇的追梦者。镜中映出的是奔跑的身影、风中猎猎的衣角，以及那双永不熄灭的眼睛。青春不是年纪，而是一种向前撞的姿态。",
+      "title": "Blazing Youth",
+      "description": "Flames roar within your chest. You become an unstoppable dreamer. The mirror reflects a figure running against the wind, clothes soaked with sweat, and eyes burning with unyielding light. Youth was never about age — it is the courage to charge forward, even if it means shattering into pieces.",
       "svgKey": "youth",
-      "nftDescription": "镜中庭·炽热青春：热血奔涌，永不熄灭的追梦之火。"
+      "nftDescription": "Mirror Court · Blazing Youth: Blood burns hot, the fire of pursuit never dies."
     },
     "2": {
-      "title": "沉淀中年",
-      "description": "年轮在镜中缓缓展开。你站在庭院中央，目光沉静如深湖。经历过的风雨化作智慧的纹理，刻在你的眉眼和脊背。你终于明白：真正的力量，是接纳与继续前行。",
+      "title": "Settled Midlife",
+      "description": "Growth rings slowly unfold in the mirror. You stand at the center of the courtyard, your gaze as calm as a deep lake. All the storms you’ve weathered, the people you’ve loved and lost, every laugh and every tear have become patterns of wisdom etched into your face and spine. You finally understand: true strength is not conquest, but acceptance and gentle continuation.",
       "svgKey": "middleage",
-      "nftDescription": "镜中庭·沉淀中年：年轮记录岁月，智慧如深邃的湖。"
+      "nftDescription": "Mirror Court · Settled Midlife: Growth rings record the years, wisdom as deep as a serene lake."
     },
     "3": {
-      "title": "镜碎释然",
-      "description": "所有的镜像在同一刻破碎。碎片如雪般飞散，又归于纯白。你发现镜中从来不是别人，而是自己投下的幻影。当一切归零，只剩下一片宁静而澄明的空灵。",
+      "title": "Shattered Serenity",
+      "description": "In an instant, all reflections shatter at once. Countless mirror fragments dance like snowflakes in the air before dissolving into nothingness. You realize the mirror never showed others — it only displayed the illusions you projected. When everything returns to zero, only a pure, tranquil whiteness remains. You breathe out softly, a peaceful smile blooming on your lips.",
       "svgKey": "enlightenment",
-      "nftDescription": "镜中庭·镜碎释然：镜像皆碎，本无一物，只剩宁静纯白。"
+      "nftDescription": "Mirror Court · Shattered Serenity: All mirrors broken, nothing remains — only pure, tranquil white."
     }
   }
 }
