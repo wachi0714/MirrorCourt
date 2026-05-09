@@ -27,40 +27,35 @@ contract MirrorCourt is ERC721, ERC721URIStorage {
     Scene[] public scenes;
     mapping(address => PlayerStory) public players;
 
-    // 4 ending SVGs with your team's official names
     string public constant ENDING_1 = '<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#ffd700"/><text x="50%" y="50%" font-size="32" fill="#000" text-anchor="middle">Childhood Wonder</text></svg>';
     string public constant ENDING_2 = '<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#ff4500"/><text x="50%" y="50%" font-size="32" fill="#fff" text-anchor="middle">Blazing Youth</text></svg>';
     string public constant ENDING_3 = '<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#191970"/><text x="50%" y="50%" font-size="32" fill="#fff" text-anchor="middle">Settled Midlife</text></svg>';
     string public constant ENDING_4 = '<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#ffffff"/><text x="50%" y="50%" font-size="32" fill="#000" text-anchor="middle">Shattered Serenity</text></svg>';
 
     constructor() ERC721("Mirror Court", "MIRROR") {
-        // Scene 0: Start
-        scenes.push(Scene({
-            description: "You stand before a magic mirror. Draw a spiral or a straight line.",
-            options: ["Draw spiral", "Draw straight line"],
-            nextScenes: [1, 1]
-        }));
+        scenes.push(Scene(
+            "You stand before a magic mirror. Draw a spiral or a straight line.",
+            ["Draw spiral", "Draw straight line"],
+            [1, 1]
+        ));
 
-        // Scene 1: Life path choice
-        scenes.push(Scene({
-            description: "The mirror shows your life path. What attitude do you choose?",
-            options: ["Encourage adventure", "Choose stability"],
-            nextScenes: [2, 2]
-        }));
+        scenes.push(Scene(
+            "The mirror shows your life path. What attitude do you choose?",
+            ["Encourage adventure", "Choose stability"],
+            [2, 2]
+        ));
 
-        // Scene 2: Regret reflection
-        scenes.push(Scene({
-            description: "Regret emerges. Which do you feel more deeply?",
-            options: ["Regret words unsaid", "Regret things done"],
-            nextScenes: [3, 3]
-        }));
+        scenes.push(Scene(
+            "Regret emerges. Which do you feel more deeply?",
+            ["Regret words unsaid", "Regret things done"],
+            [3, 3]
+        ));
 
-        // Scene 3: Final choice
-        scenes.push(Scene({
-            description: "Final choice. Which ending do you accept?",
-            options: ["Childhood Wonder", "Blazing Youth", "Settled Midlife", "Shattered Serenity"],
-            nextScenes: [99, 99, 99, 99]
-        }));
+        scenes.push(Scene(
+            "Final choice. Which ending do you accept?",
+            ["Childhood Wonder", "Blazing Youth", "Settled Midlife", "Shattered Serenity"],
+            [99, 99, 99, 99]
+        ));
     }
 
     function startStory() public {
@@ -87,9 +82,16 @@ contract MirrorCourt is ERC721, ERC721URIStorage {
         }
     }
 
+    // ✅ fixed
     function getCurrentScene() public view returns (string memory, string[] memory) {
         PlayerStory storage story = players[msg.sender];
         require(story.isStarted, "No active story");
+        
+        // Fix: Return completion message when story is finished
+        if (story.isCompleted) {
+            return ("The mirror's tale is complete. Mint your NFT to behold the final reflection.", new string[](0));
+        }
+        
         Scene storage s = scenes[story.currentScene];
         return (s.description, s.options);
     }
@@ -134,7 +136,7 @@ contract MirrorCourt is ERC721, ERC721URIStorage {
         }
 
         string memory json = string(abi.encodePacked(
-            '{"name":"Mirror Court #', Strings.toString(_tokenIdCounter.current() - 1), '",',
+            '{"name":"Mirror Court #', Strings.toString(tokenIdCounter.current() - 1), '",',
             '"description":"', description, '",',
             '"image":"data:image/svg+xml;base64,', Base64.encode(bytes(svg)), '"}'
         ));
