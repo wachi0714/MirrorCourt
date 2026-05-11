@@ -27,30 +27,35 @@ contract MirrorCourt is ERC721, ERC721URIStorage {
     Scene[] public scenes;
     mapping(address => PlayerStory) public players;
 
+    // 4 Ending SVGs (Aligned with Member B's on-chain art)
     string public constant ENDING_1 = '<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#ffd700"/><text x="50%" y="50%" font-size="32" fill="#000" text-anchor="middle">Childhood Wonder</text></svg>';
     string public constant ENDING_2 = '<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#ff4500"/><text x="50%" y="50%" font-size="32" fill="#fff" text-anchor="middle">Blazing Youth</text></svg>';
     string public constant ENDING_3 = '<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#191970"/><text x="50%" y="50%" font-size="32" fill="#fff" text-anchor="middle">Settled Midlife</text></svg>';
     string public constant ENDING_4 = '<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#ffffff"/><text x="50%" y="50%" font-size="32" fill="#000" text-anchor="middle">Shattered Serenity</text></svg>';
 
     constructor() ERC721("Mirror Court", "MIRROR") {
+        // Scene 0: Start (Aligned with Member C's story flow)
         scenes.push(Scene(
             "You stand before a magic mirror. Draw a spiral or a straight line.",
             ["Draw spiral", "Draw straight line"],
             [1, 1]
         ));
 
+        // Scene 1: Life Path Choice
         scenes.push(Scene(
             "The mirror shows your life path. What attitude do you choose?",
             ["Encourage adventure", "Choose stability"],
             [2, 2]
         ));
 
+        // Scene 2: Regret Reflection
         scenes.push(Scene(
             "Regret emerges. Which do you feel more deeply?",
             ["Regret words unsaid", "Regret things done"],
             [3, 3]
         ));
 
+        // Scene 3: Final Choice (Aligned with 4 endings from B/C)
         scenes.push(Scene(
             "Final choice. Which ending do you accept?",
             ["Childhood Wonder", "Blazing Youth", "Settled Midlife", "Shattered Serenity"],
@@ -82,7 +87,7 @@ contract MirrorCourt is ERC721, ERC721URIStorage {
         }
     }
 
-    // ✅ FIX FROM B & C: SAFE SCENE RETURN WHEN COMPLETED
+    // Fixed: Safe for frontend (Member B) - no crashes when story ends
     function getCurrentScene() public view returns (string memory, string[] memory) {
         PlayerStory storage story = players[msg.sender];
         require(story.isStarted, "No active story");
@@ -100,6 +105,7 @@ contract MirrorCourt is ERC721, ERC721URIStorage {
         return (s.currentScene, s.choices, s.isStarted, s.isCompleted);
     }
 
+    // NFT Mint (Aligned with Member B's frontend NFT display)
     function finalizeAndMintNFT() public {
         PlayerStory storage story = players[msg.sender];
         require(story.isCompleted, "Story not completed");
@@ -119,6 +125,7 @@ contract MirrorCourt is ERC721, ERC721URIStorage {
         return ENDING_4;
     }
 
+    // On-chain metadata (Compatible with Member B's SVG rendering)
     function generateURI(address user) public view returns (string memory) {
         uint8[] memory choices = players[user].choices;
         string memory svg = _generateArtByChoicePath(choices);
@@ -146,6 +153,7 @@ contract MirrorCourt is ERC721, ERC721URIStorage {
         ));
     }
 
+    // Required ERC721 overrides
     function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
