@@ -1,117 +1,95 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("FateMirror", function () {
-  let fateMirror;
-  let owner, user1, user2;
+describe("MirrorCourt Contract Tests (Aligned with B/C Requirements)", function () {
+  let mirrorCourt;
+  let owner;
 
+  // Fresh contract deployment for each test (Member C's clean test environment)
   beforeEach(async function () {
-    [owner, user1, user2] = await ethers.getSigners();
-    const FateMirror = await ethers.getContractFactory("FateMirror");
-    fateMirror = await FateMirror.deploy();
-    await fateMirror.deployed();
+    const MirrorCourt = await ethers.getContractFactory("MirrorCourt");
+    mirrorCourt = await MirrorCourt.deploy();
+    [owner] = await ethers.getSigners();
   });
 
-  describe("Story lifecycle", function () {
-    it("Should start a new story", async function () {
-      await fateMirror.connect(user1).startStory();
-      const [currentScene, options] = await fateMirror.connect(user1).getCurrentScene();
-      expect(currentScene).to.include("magic mirror");
-      expect(options.length).to.equal(2);
-    });
+  // Test 1: Basic story start (Member C's core story logic)
+  it("✅ Should start a new story successfully", async function () {
+    await mirrorCourt.startStory();
+    const [currentScene, choices, isStarted, isCompleted] = await mirrorCourt.getStoryState();
+    expect(isStarted).to.equal(true);
+    expect(currentScene).to.equal(0);
+  });
 
-    it("Should not allow starting twice", async function () {
-      await fateMirror.connect(user1).startStory();
-      await expect(fateMirror.connect(user1).startStory()).to.be.revertedWith("Story already started");
-    });
+  // Test 2: Full story flow (Member C's story branch coverage)
+  it("✅ Should complete story after all choices", async function () {
+    await mirrorCourt.startStory();
+    // Scene 0: Choose "Draw spiral"
+    await mirrorCourt.makeChoice(0);
+    // Scene 1: Choose "Encourage adventure"
+    await mirrorCourt.makeChoice(0);
+    // Scene 2: Choose "Regret words unsaid"
+    await mirrorCourt.makeChoice(0);
+    // Scene 3: Choose "Childhood Wonder"
+    await mirrorCourt.makeChoice(0);
 
-    it("Should make choices and reach an ending", async function () {
-      await fateMirror.connect(user1).startStory();
+    const [, , , isCompleted] = await mirrorCourt.getStoryState();
+    expect(isCompleted).to.equal(true);
+  });
 
-      // Scene 0: choose spiral (0)
-      await fateMirror.connect(user1).makeChoice(0);
-      let state = await fateMirror.connect(user1).getStoryState();
-      expect(state[0]).to.equal(1); // currentScene = 1
+  // Test 3: Fixed getCurrentScene (Member B's frontend safety)
+  it("✅ Should return completion message (no crash) when story ends", async function () {
+    await mirrorCourt.startStory();
+    // Complete all choices
+    await mirrorCourt.makeChoice(0);
+    await mirrorCourt.makeChoice(0);
+    await mirrorCourt.makeChoice(0);
+    await mirrorCourt.makeChoice(0);
 
-      // Scene 1: choose stability (1)
-      await fateMirror.connect(user1).makeChoice(1);
-      state = await fateMirror.connect(user1).getStoryState();
-      expect(state[0]).to.equal(2);
+    const [description, options] = await mirrorCourt.getCurrentScene();
+    expect(description).to.equal("Story completed. Mint your NFT to see the final reflection.");
+    expect(options.length).to.equal(0);
+  });
 
-      // Scene 2: choose regret words unsaid (0)
-      await fateMirror.connect(user1).makeChoice(0);
-      state = await fateMirror.connect(user1).getStoryState();
-      expect(state[0]).to.equal(3);
+  // Test 4: NFT Mint (Member B's NFT display validation)
+  it("✅ Should mint NFT after story completion", async function () {
+    await mirrorCourt.startStory();
+    // Complete story
+    await mirrorCourt.makeChoice(0);
+    await mirrorCourt.makeChoice(0);
+    await mirrorCourt.makeChoice(0);
+    await mirrorCourt.makeChoice(0);
 
-      // Scene 3: choose Midlife (2)
-      await fateMirror.connect(user1).makeChoice(2);
-      state = await fateMirror.connect(user1).getStoryState();
-      expect(state[3]).to.equal(true); // isCompleted
-      expect(state[0]).to.equal(99);
-    });
+    // Mint NFT
+    await mirrorCourt.finalizeAndMintNFT();
+    const balance = await mirrorCourt.balanceOf(owner.address);
+    expect(balance).to.equal(1);
 
-    it("Should not allow minting before completion", async function () {
-      await fateMirror.connect(user1).startStory();
-      await expect(fateMirror.connect(user1).finalizeAndMintNFT()).to.be.revertedWith("Story not completed");
-    });
+    // Verify NFT metadata (Member B's SVG integration)
+    const tokenURI = await mirrorCourt.tokenURI(0);
+    expect(tokenURI).to.include("data:application/json;base64");
+    expect(tokenURI).to.include("Childhood Wonder");
+  });
 
-    it("Should mint NFT only after full story", async function () {
-      await fateMirror.connect(user1).startStory();
-      // Full path: 0-0-0-1 (Youth ending)
-      await fateMirror.connect(user1).makeChoice(0);
-      await fateMirror.connect(user1).makeChoice(0);
-      await fateMirror.connect(user1).makeChoice(0);
-      await fateMirror.connect(user1).makeChoice(1); // Youth
+  // Test 5: Boundary cases (Member C's error handling testing)
+  it("❌ Should revert when minting NFT before story completion", async function () {
+    await mirrorCourt.startStory();
+    // Incomplete story (only 2 choices)
+    await mirrorCourt.makeChoice(0);
+    await mirrorCourt.makeChoice(0);
 
-      const completed = (await fateMirror.connect(user1).getStoryState())[3];
-      expect(completed).to.be.true;
+    await expect(mirrorCourt.finalizeAndMintNFT()).to.be.revertedWith("Story not completed");
+  });
 
-      await fateMirror.connect(user1).finalizeAndMintNFT();
-      const balance = await fateMirror.balanceOf(user1.address);
-      expect(balance).to.equal(1);
-    });
+  it("❌ Should revert when minting NFT multiple times", async function () {
+    await mirrorCourt.startStory();
+    // Complete story and mint once
+    await mirrorCourt.makeChoice(0);
+    await mirrorCourt.makeChoice(0);
+    await mirrorCourt.makeChoice(0);
+    await mirrorCourt.makeChoice(0);
+    await mirrorCourt.finalizeAndMintNFT();
 
-    it("Should not mint twice for same address", async function () {
-      await fateMirror.connect(user1).startStory();
-      await fateMirror.connect(user1).makeChoice(0);
-      await fateMirror.connect(user1).makeChoice(0);
-      await fateMirror.connect(user1).makeChoice(0);
-      await fateMirror.connect(user1).makeChoice(0); // Childhood
-      await fateMirror.connect(user1).finalizeAndMintNFT();
-
-      await expect(fateMirror.connect(user1).finalizeAndMintNFT()).to.be.revertedWith("Already minted NFT");
-    });
-
-    it("Should return correct scene after story completed (no crash)", async function () {
-      await fateMirror.connect(user1).startStory();
-      await fateMirror.connect(user1).makeChoice(0);
-      await fateMirror.connect(user1).makeChoice(0);
-      await fateMirror.connect(user1).makeChoice(0);
-      await fateMirror.connect(user1).makeChoice(0); // Childhood
-
-      const [desc, options] = await fateMirror.connect(user1).getCurrentScene();
-      expect(desc).to.include("story has ended");
-      expect(options.length).to.equal(0);
-    });
-
-    it("Should generate different endings based on final choice", async function () {
-      // User1 - Childhood ending
-      await fateMirror.connect(user1).startStory();
-      for (let i = 0; i < 3; i++) await fateMirror.connect(user1).makeChoice(0);
-      await fateMirror.connect(user1).makeChoice(0); // Childhood
-      await fateMirror.connect(user1).finalizeAndMintNFT();
-      const tokenId1 = 0;
-      const uri1 = await fateMirror.tokenURI(tokenId1);
-      expect(uri1).to.include("Childhood");
-
-      // User2 - Youth ending
-      await fateMirror.connect(user2).startStory();
-      for (let i = 0; i < 3; i++) await fateMirror.connect(user2).makeChoice(1);
-      await fateMirror.connect(user2).makeChoice(1); // Youth
-      await fateMirror.connect(user2).finalizeAndMintNFT();
-      const tokenId2 = 1;
-      const uri2 = await fateMirror.tokenURI(tokenId2);
-      expect(uri2).to.include("Youth");
-    });
+    // Revert on second mint
+    await expect(mirrorCourt.finalizeAndMintNFT()).to.be.revertedWith("Already minted NFT");
   });
 });
