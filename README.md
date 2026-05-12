@@ -15,10 +15,6 @@ Make meaningful choices. Shape your destiny.
 
 <div align="center">
 
-## 🎨 The Four Endings
-
-<div align="center">
-
 ### 1. Childhood Wonder
 ![Childhood Wonder](./images/childhood-wonder.jpg)  
 *Return to a carefree childhood. The world remains soft and bright forever.*
@@ -47,22 +43,28 @@ Make meaningful choices. Shape your destiny.
 
 - **Smart Contract**: Solidity ^0.8.19 + Hardhat + OpenZeppelin ERC721
 - **Frontend**: HTML + CSS + JavaScript + ethers.js
-- **NFT Art**: Fully on-chain SVG (4 unique artistic endings)
+- **NFT Art**: Fully on-chain SVG + High-quality ending images
 - **Testnet**: Sepolia
 
 ## 📁 Project Structure
 
 ```bash
-MirrorCourt/
+MirrorCourt/                      # 项目根目录
 ├── contracts/
-│   └── MirrorCourt.sol          # Main contract with on-chain SVGs
+│   └── MirrorCourt.sol
+├── frontend/
+│   ├── index.html
+│   └── svg_generator.html
 ├── scripts/
-│   └── deploy.js                # Deployment script
+│   └── deploy.js
 ├── test/
-│   └── MirrorCourt.test.js      # Unit tests
-├── index.html                   # Frontend dApp
-├── svg_generator.html           # SVG design tool
-├── storydata.js                 # Story content data
+│   └── MirrorCourt.test.js
+├── images/                       # NFT 结局展示图片
+│   ├── childhood-wonder.jpg
+│   ├── blazing-youth.jpg
+│   ├── settled-midlife.jpg
+│   └── shattered-serenity.jpg
+├── storydata.js
 ├── hardhat.config.js
 ├── package.json
 └── README.md
