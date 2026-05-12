@@ -1,4 +1,3 @@
-# Fite2010
 # 🎭 **Mirror Court** — *The Mirror Court*
 
 An **on-chain interactive story + NFT minting** project.  
