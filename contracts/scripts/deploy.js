@@ -1,23 +1,18 @@
 const hre = require("hardhat");
 
 async function main() {
-  // Deploy MirrorCourt contract (aligned with contract name)
-  const MirrorCourt = await hre.ethers.getContractFactory("MirrorCourt");
-  const mirrorCourt = await MirrorCourt.deploy();
+  console.log("Deploying FateMirror contract...");
 
-  await mirrorCourt.deployed();
+  const FateMirror = await hre.ethers.getContractFactory("FateMirror");
+  const fateMirror = await FateMirror.deploy();
+  await fateMirror.waitForDeployment();
 
-  // Clear output for Member B (frontend integration) and Member C (testing)
-  console.log(`✅ MirrorCourt Contract Deployed Successfully`);
-  console.log(`📜 Contract Address: ${mirrorCourt.address}`);
-  console.log(`💡 Share this address with Member B for frontend integration`);
-  console.log(`🔍 Use this address for Member C's testing validation`);
+  const address = await fateMirror.getAddress();
+  console.log(`FateMirror deployed to: ${address}`);
+  console.log("ABI generated in artifacts/contracts/FateMirror.sol/FateMirror.json");
 }
 
-// Enhanced error handling (for Member C's debugging)
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error("❌ Deployment Failed: ", error);
-    process.exit(1);
-  });
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
