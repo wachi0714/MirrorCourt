@@ -1,4 +1,4 @@
-<img width="958" height="968" alt="abfe432ec40d06ed98b4459b57e12da3" src="https://github.com/user-attachments/assets/0e8f27c4-996f-427c-a1b2-033894514d85" /># 🎭 Mirror Court — The Mirror Court
+# 🎭 Mirror Court — The Mirror Court
 
 An on-chain interactive story + NFT minting project.  
 Every choice you make will be eternally etched into the mirror, becoming your unique life reflection.
