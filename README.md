@@ -11,6 +11,32 @@ At its center stands a massive bronze mirror that reflects not only your appeara
 Make meaningful choices. Shape your destiny.  
 **Finally mint your personal NFT** — a permanent on-chain artwork of your journey.
 
+## 🎨 The Four Endings
+
+<div align="center">
+
+## 🎨 The Four Endings
+
+<div align="center">
+
+### 1. Childhood Wonder
+![Childhood Wonder](./images/childhood-wonder.jpg)  
+*Return to a carefree childhood. The world remains soft and bright forever.*
+
+### 2. Blazing Youth
+![Blazing Youth](./images/blazing-youth.jpg)  
+*Flames roar within your chest. Become an unstoppable dreamer.*
+
+### 3. Settled Midlife
+![Settled Midlife](./images/settled-midlife.jpg)  
+*Growth rings record the years. Wisdom as deep as a serene lake.*
+
+### 4. Shattered Serenity
+![Shattered Serenity](./images/shattered-serenity.jpg)  
+*All reflections shatter. Only pure, tranquil whiteness remains.*
+
+</div>
+
 ## 🎯 How to Play
 
 1. Start your story in the Mirror Court  
