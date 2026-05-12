@@ -1,6 +1,7 @@
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-ethers");
 require("hardhat-deploy");
+require("dotenv").config();
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -17,9 +18,13 @@ module.exports = {
   // Network config for Member C's testing (Sepolia + Local Hardhat)
   networks: {
     hardhat: {},
+    localhost: {
+      url: "http://127.0.0.1:8545",
+    },
     sepolia: {
-      url: "https://rpc.sepolia.org", // Public Sepolia RPC (no extra setup)
-      accounts: ["YOUR_TESTNET_PRIVATE_KEY"], // Replace with MetaMask testnet key
+      url: process.env.SEPOLIA_RPC_URL || "https://rpc.sepolia.org",
+      accounts: process.env.SEPOLIA_PRIVATE_KEY ? [process.env.SEPOLIA_PRIVATE_KEY] : [],
+      chainId: 11155111,
     },
   },
   // Path config for Member C's test file access
