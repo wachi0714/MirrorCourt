@@ -73,6 +73,7 @@ MirrorCourt/
 └── package-lock.json
 
 ## 🚀 Quick Start
+## 🚀 Quick Start
 
 Open **4 terminals** in the project root directory:
 
