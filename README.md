@@ -16,7 +16,7 @@ Make meaningful choices. Shape your destiny.
 <div align="center">
 
 ### 1. Childhood Wonder
-![Childhood Wonder](./images/childhood-wonder.jpg)  
+![Childhood Wonder](./images/childhood-wonder.jpg)
 *Return to a carefree childhood. The world remains soft and bright forever.*
 
 ### 2. Blazing Youth
