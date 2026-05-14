@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirror Court - 4-Ending SVG Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #eee;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,215,0,0.3);
+        }
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h2 {
+            margin-top: 0;
+            text-align: center;
+            border-bottom: 2px solid rgba(255,215,0,0.5);
+            display: inline-block;
+            width: auto;
+            margin-bottom: 15px;
+        }
+        .svg-preview {
+            background: white;
+            border-radius: 12px;
+            padding: 10px;
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .svg-preview svg {
+            width: 200px;
+            height: 200px;
+            border-radius: 8px;
+        }
+        .code-area {
+            background: #0a0e1a;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 15px 0;
+        }
+        .code-area pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-size: 11px;
+            color: #0f0;
+            font-family: monospace;
+            max-height: 150px;
+            overflow: auto;
+        }
+        button {
+            background: #ffd966;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #ffc107;
+            transform: scale(1.02);
+        }
+        .copy-btn {
+            background: #2c3e66;
+            color: white;
+        }
+        .copy-btn:hover {
+            background: #1e2a44;
+        }
+        .footer {
+            background: rgba(0,0,0,0.5);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .footer h3 {
+            margin-top: 0;
+        }
+        .combined {
+            font-family: monospace;
+            font-size: 12px;
+            background: #0a0e1a;
+            padding: 15px;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+        hr {
+            border-color: rgba(255,255,255,0.2);
+            margin: 20px 0;
+        }
+        @media (max-width: 960px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎭 Mirror Court · 4-Ending SVG Generator</h1>
+  <div class="subtitle">SVG Art Generator | Click to copy single-line strings</div>
+
+    <div class="grid" id="cardsGrid"></div>
+
+    <div class="footer">
+      <h3>📦 Complete 4-Ending SVG String Object</h3>
+        <div class="combined" id="combinedOutput"></div>
+        <button id="copyAllBtn" style="background: #27ae60;">📋 Copy All (JSON format)</button>
+      <p style="font-size: 12px; margin-top: 12px;">💡 The choice path in the contract retrieves the matching SVG string from this object.</p>
+    </div>
+</div>
+
+<script>
+    // ======================= Ending NFT artwork sources =======================
+    const endings = {
+        childhood: 'images/childhood.png',
+        youth:     'images/youth.png',
+        midlife:   'images/midlife.png',
+        mirror:    'images/serenity.jpg'
+    };
+
+        // Display title and colour per ending
+    const meta = {
+        childhood: { name: "Childhood Wonder", color: "#6EC6F5" },
+        youth: { name: "Blazing Youth", color: "#FFB347" },
+        midlife: { name: "Settled Midlife", color: "#D4601A" },
+        mirror: { name: "Shattered Serenity", color: "#C89098" }
+    };
+
+    // ======================= Render UI =======================
+    function renderCards() {
+        const grid = document.getElementById('cardsGrid');
+        grid.innerHTML = '';
+
+        const keys = ['childhood', 'youth', 'midlife', 'mirror'];
+        keys.forEach(key => {
+            const imgSrc = endings[key];
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <h2 style="color:${meta[key].color}">✨ ${meta[key].name}</h2>
+                <div class="svg-preview">
+                    <img src="${imgSrc}" alt="${meta[key].name}" style="width:100%;height:auto;border-radius:8px;">
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // Build the full SVG object for copy/paste and contract integration
+    function updateCombinedOutput() {
+      // Clean JSON object containing the four ending SVG strings
+        const outputObj = {
+            // Keys can be renamed to match contract requirements (e.g. 0 1 2 3)
+            "Childhood Wonder": endings.childhood,
+            "Blazing Youth": endings.youth,
+            "Settled Midlife": endings.midlife,
+            "Shattered Serenity": endings.mirror,
+            // Array version also provided for index-based contract access
+            "svgList": [endings.childhood, endings.youth, endings.midlife, endings.mirror]
+        };
+        
+        const jsonStr = JSON.stringify(outputObj, null, 2);
+        document.getElementById('combinedOutput').innerHTML = `<pre style="margin:0; white-space:pre-wrap; font-size:11px;">${escapeHtml(jsonStr)}</pre>`;
+        
+        document.getElementById('copyAllBtn').onclick = () => {
+            copyToClipboard(jsonStr);
+            alert('📦 Copied full JSON (contains 4 SVG strings)');
+        };
+    }
+
+    // Helper: copy to clipboard
+    function copyToClipboard(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // Initialise
+    renderCards();
+    updateCombinedOutput();
+</script>
+</body>
+</html>
