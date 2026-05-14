@@ -51,19 +51,19 @@ Make meaningful choices. Shape your destiny.
 ```bash
 MirrorCourt/                      # 项目根目录
 ├── contracts/
-│   └── MirrorCourt.sol
+│   └── FateMirrorCourt.sol
 ├── frontend/
 │   ├── index.html
 │   └── svg_generator.html
 ├── scripts/
 │   └── deploy.js
 ├── test/
-│   └── MirrorCourt.test.js
+│   └── FateMirrorCourt.test.js
 ├── images/                       # NFT 结局展示图片
-│   ├── childhood-wonder.jpg
-│   ├── blazing-youth.jpg
-│   ├── settled-midlife.jpg
-│   └── shattered-serenity.jpg
+│   ├── childhood.jpg
+│   ├── youth.jpg
+│   ├── midlife.jpg
+│   └── serenity.jpg
 ├── storydata.js
 ├── hardhat.config.js
 ├── package.json
