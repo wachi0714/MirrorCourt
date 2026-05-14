@@ -3,6 +3,14 @@
 An on-chain interactive story + NFT minting project.  
 Every choice you make will be eternally etched into the mirror, becoming your unique life reflection.
 
+## 👥 Project Team
+
+| Student ID   | Name              | English Name     |
+|--------------|-------------------|------------------|
+| 3036388654   | 劉慧敏            | Lau Wai Man      |
+| 3036389488   | 陳君怡            | Chan Kwan Yi     |
+| 3036226674   | 周天淇            | Chau Tin Ki      |
+
 ## ✨ Project Introduction
 
 You push open an ancient wooden door entwined with vines and step into the moonlit **Mirror Court**.  
