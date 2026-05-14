@@ -70,3 +70,4 @@ MirrorCourt/
 ├── README.md
 ├── .gitignore
 └── .env.example
+└── package-lock.json
