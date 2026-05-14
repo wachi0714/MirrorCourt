@@ -66,13 +66,15 @@ npx hardhat run scripts/deploy.js --network localhost
 **Terminal D**
 python3 -m http.server 5500
 
-Open your browser:
-http://127.0.0.1:5500/index.html
-Then:
-Connect MetaMask
-Paste the contract address
-Click Load Contract
-Click Start New Story
+Open your browser:  
+**http://127.0.0.1:5500/index.html**
+
+Then perform the following steps:
+
+1. Click **Connect MetaMask**
+2. Paste the contract address
+3. Click **Load Contract**
+4. Click **Start New Story**
 
 
 ## 📁 Project Structure
