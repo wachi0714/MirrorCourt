@@ -16,19 +16,19 @@ Make meaningful choices. Shape your destiny.
 <div align="center">
 
 ### 1. Childhood Wonder
-![Childhood Wonder](./images/childhood-wonder.jpg)
+![Childhood Wonder](./images/childhood.jpg)
 *Return to a carefree childhood. The world remains soft and bright forever.*
 
 ### 2. Blazing Youth
-![Blazing Youth](./images/blazing-youth.jpg)  
+![Blazing Youth](./images/youth.jpg)  
 *Flames roar within your chest. Become an unstoppable dreamer.*
 
 ### 3. Settled Midlife
-![Settled Midlife](./images/settled-midlife.jpg)  
+![Settled Midlife](./images/midlife.jpg)  
 *Growth rings record the years. Wisdom as deep as a serene lake.*
 
 ### 4. Shattered Serenity
-![Shattered Serenity](./images/shattered-serenity.jpg)  
+![Shattered Serenity](./images/serenity.jpg)  
 *All reflections shatter. Only pure, tranquil whiteness remains.*
 
 </div>
