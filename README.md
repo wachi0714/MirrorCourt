@@ -49,7 +49,7 @@ Make meaningful choices. Shape your destiny.
 ## 📁 Project Structure
 
 ```bash
-MirrorCourt/                          # 项目根目录
+MirrorCourt/                          
 ├── contracts/
 │   └── FateMirrorCourt.sol
 ├── frontend/
