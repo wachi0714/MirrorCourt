@@ -69,5 +69,5 @@ MirrorCourt/
 ├── package.json
 ├── README.md
 ├── .gitignore
-└── .env.example
+├──.env.example
 └── package-lock.json
