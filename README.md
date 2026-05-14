@@ -49,7 +49,7 @@ Make meaningful choices. Shape your destiny.
 ## 📁 Project Structure
 
 ```bash
-MirrorCourt/                      # 项目根目录
+MirrorCourt/                          # 项目根目录
 ├── contracts/
 │   └── FateMirrorCourt.sol
 ├── frontend/
@@ -58,13 +58,15 @@ MirrorCourt/                      # 项目根目录
 ├── scripts/
 │   └── deploy.js
 ├── test/
-│   └── FateMirrorCourt.test.js
-├── images/                       # NFT 结局展示图片
-│   ├── childhood.jpg
-│   ├── youth.jpg
-│   ├── midlife.jpg
+│   └── FateMirror.test.js
+├── images/
+│   ├── childhood.png
+│   ├── youth.png
+│   ├── midlife.png
 │   └── serenity.jpg
 ├── storydata.js
 ├── hardhat.config.js
 ├── package.json
-└── README.md
+├── README.md
+├── .gitignore
+└── .env.example
