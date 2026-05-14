@@ -71,3 +71,35 @@ MirrorCourt/
 ├── .gitignore
 ├──.env.example
 └── package-lock.json
+## 🚀 Quick Start
+
+Open **4 terminals** in the project root directory:
+
+**Terminal A**
+```bash
+npm install
+npx hardhat compile
+npx hardhat test
+Terminal B
+Bashnpx hardhat node
+Terminal C
+Bashnpx hardhat run scripts/deploy.js --network localhost
+Copy the deployed contract address (e.g. 0x...)
+Terminal D
+Bashpython3 -m http.server 5500
+Open your browser:
+http://127.0.0.1:5500/index.html
+Then:
+
+Connect MetaMask
+Paste the contract address
+Click Load Contract
+Click Start New Story
+
+
+🛠️ Common Issues
+
+CALL_EXCEPTION (getCurrentScene): Redeploy contract (Terminal C) and update the address in frontend.
+"Story already started": Click Refresh Scene, or restart Hardhat node + redeploy.
+Port already in use (5500 or 8545):Bashlsof -nP -iTCP:5500 -sTCP:LISTEN
+kill <PID>(Same command for port 8545)
