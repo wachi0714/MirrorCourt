@@ -46,34 +46,7 @@ Make meaningful choices. Shape your destiny.
 - **NFT Art**: Fully on-chain SVG + High-quality ending images
 - **Testnet**: Sepolia
 
-## 📁 Project Structure
-
-```bash
-MirrorCourt/                          
-├── contracts/
-│   └── FateMirrorCourt.sol
-├── frontend/
-│   ├── index.html
-│   └── svg_generator.html
-├── scripts/
-│   └── deploy.js
-├── test/
-│   └── FateMirror.test.js
-├── images/
-│   ├── childhood.png
-│   ├── youth.png
-│   ├── midlife.png
-│   └── serenity.jpg
-├── storydata.js
-├── hardhat.config.js
-├── package.json
-├── README.md
-├── .gitignore
-├──.env.example
-└── package-lock.json
-
-## 🚀 Quick Start
-## 🚀 Quick Start
+##  🚀 Quick Start
 
 Open **4 terminals** in the project root directory:
 
@@ -100,3 +73,31 @@ Connect MetaMask
 Paste the contract address
 Click Load Contract
 Click Start New Story
+## 📁 Project Structure
+
+```bash
+MirrorCourt/                          
+├── contracts/
+│   └── FateMirrorCourt.sol
+├── frontend/
+│   ├── index.html
+│   └── svg_generator.html
+├── scripts/
+│   └── deploy.js
+├── test/
+│   └── FateMirror.test.js
+├── images/
+│   ├── childhood.png
+│   ├── youth.png
+│   ├── midlife.png
+│   └── serenity.jpg
+├── storydata.js
+├── hardhat.config.js
+├── package.json
+├── README.md
+├── .gitignore
+├──.env.example
+└── package-lock.json
+
+
+
